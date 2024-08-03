@@ -1,0 +1,114 @@
+type User {
+    id: ID!
+    username: String!
+    email: String!
+    age: Int
+    weight: Float
+    runActivities: [RunActivity!]!
+    runningStats: RunningStats!
+}
+
+type RunActivity {
+    id: ID!
+    user: User!
+    distance: Float!
+    duration: Int!
+    date: String!
+    route: String
+    averagePace: Float
+    calories: Int
+}
+
+type AuthPayload{
+    message: String
+    token: String!
+}
+
+type RunningStats {
+    totalDistance: Float!
+    totalDuration: Int!
+    averagePace: Float!
+    totalCalories: Int!
+    totalActivities: Int!
+}
+
+type Goal {
+    id: ID!
+    user: User!
+    type: GoalType!
+    target: Float!
+    deadline: String
+    completed: Boolean!
+}
+
+enum GoalType {
+    DISTANCE
+    DURATION
+    PACE
+}
+
+type Query {
+    user(id: ID!): User
+    runActivity(id: ID!): RunActivity
+    runActivities(userId: ID!): [RunActivity!]!
+    runningStats(userId: ID!): RunningStats!
+    goals(userId: ID!): [Goal!]!
+}
+
+type Mutation {
+    login(username: String!, password: String!): AuthPayload!
+    createUser(input: CreateUserInput!): User!
+    updateUser(id: ID!, input: UpdateUserInput!): User!
+    deleteUser(id: ID!): Boolean!
+
+    createRunActivity(input: CreateRunActivityInput!): RunActivity!
+    updateRunActivity(id: ID!, input: UpdateRunActivityInput!): RunActivity!
+    deleteRunActivity(id: ID!): Boolean!
+
+    createGoal(input: CreateGoalInput!): Goal!
+    updateGoal(id: ID!, input: UpdateGoalInput!): Goal!
+    deleteGoal(id: ID!): Boolean!
+}
+
+input CreateUserInput {
+    username: String!
+    email: String!
+    password: String!
+    age: Int
+    weight: Float
+}
+
+input UpdateUserInput {
+    username: String
+    age: Int
+    weight: Float
+}
+
+input CreateRunActivityInput {
+    userId: ID!
+    distance: Float!
+    duration: Int!
+    date: String!
+    route: String
+}
+
+input UpdateRunActivityInput {
+    distance: Float
+    duration: Int
+    date: String
+    route: String
+}
+
+input CreateGoalInput {
+    userId: ID!
+    type: GoalType!
+    target: Float!
+    deadline: String
+}
+
+input UpdateGoalInput {
+    type: GoalType
+    target: Float
+    deadline: String
+    completed: Boolean
+}

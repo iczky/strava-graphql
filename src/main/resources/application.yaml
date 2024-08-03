@@ -1,0 +1,35 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: strava-graphql
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  graphql:
+#    servlet:
+#      mapping: /graphql
+    graphiql:
+      enabled: true
+      path: /graphiql
+    path: /graphql
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: ["prometheus", "health"]
+
+rsa:
+  private-key: "classpath:certs/private-key.pem"
+  public-key: "classpath:certs/public-key.pem"
