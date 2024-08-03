@@ -13,10 +13,7 @@ type RunActivity {
     user: User!
     distance: Float!
     duration: Int!
-    date: String!
-    route: String
-    averagePace: Float
-    calories: Int
+    date: Instant!
 }
 
 type AuthPayload{
@@ -88,8 +85,6 @@ input CreateRunActivityInput {
     userId: ID!
     distance: Float!
     duration: Int!
-    date: String!
-    route: String
 }
 
 input UpdateRunActivityInput {
@@ -112,3 +107,5 @@ input UpdateGoalInput {
     deadline: String
     completed: Boolean
 }
+
+scalar Instant
