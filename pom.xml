@@ -44,7 +44,7 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-        <dependency>
+         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>

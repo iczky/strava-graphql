@@ -18,7 +18,7 @@ public class UserAuth extends User implements UserDetails{
     }
 
     public String getUsername() {
-        return user.getUsername();
+        return user.getEmail();
     }
 
     public String getPassword() {

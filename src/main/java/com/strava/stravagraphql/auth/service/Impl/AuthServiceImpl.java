@@ -5,9 +5,11 @@ import com.strava.stravagraphql.auth.entity.UserAuth;
 import com.strava.stravagraphql.auth.service.AuthService;
 import com.strava.stravagraphql.user.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
+import lombok.extern.java.Log;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,8 +21,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.stream.Collectors;
 
 @Service
+@Log
 public class AuthServiceImpl implements AuthService {
     private final JwtEncoder jwtEncoder;
     private final UserRepository userRepository;
@@ -35,7 +39,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
-        String scope = authentication.getAuthorities().toString();
+        String scope = authentication.getAuthorities()
+                        .stream()
+                                .map(GrantedAuthority::getAuthority)
+                                        .collect(Collectors.joining(" "));
+        log.info("SCOPE AUTHORITIES=========>= " + scope);
 
         Long userId = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found")).getId();
@@ -60,6 +68,7 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserAuth userDetails = (UserAuth) authentication.getPrincipal();
+        log.info("Token requested for user :" + userDetails.getUsername() + " with roles: " + userDetails.getAuthorities().toArray()[0]);
         String token = generateToken(authentication);
 
         LoginResponseDto loginResponseDto = new LoginResponseDto();
