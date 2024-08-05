@@ -13,7 +13,7 @@ type RunActivity {
     user: User!
     distance: Float!
     duration: Int!
-    date: Instant!
+    createdAt: Instant!
 }
 
 type AuthPayload{
