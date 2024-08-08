@@ -8,6 +8,8 @@ import com.strava.stravagraphql.user.entity.User;
 import com.strava.stravagraphql.user.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ActivityServiceImpl implements ActivityService {
 
@@ -30,5 +32,16 @@ public class ActivityServiceImpl implements ActivityService {
 
         activityRepository.save(activity);
         return activity;
+    }
+
+    @Override
+    public Activity getActivityByUserId(Long userId) {
+        Optional<Activity> optionalActivity = activityRepository.findByUserId(userId);
+
+        if (optionalActivity.isEmpty()){
+            throw new RuntimeException("Activity not found");
+        }
+
+        return optionalActivity.get();
     }
 }

@@ -5,6 +5,7 @@ import com.strava.stravagraphql.activity.entity.Activity;
 import com.strava.stravagraphql.activity.service.ActivityService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -17,6 +18,11 @@ public class ActivityResolver {
     @MutationMapping(value = "createRunActivity")
     public Activity createRunActivity(@Argument CreateActivityReqDto input){
         return activityService.createActivity(input);
+    }
+
+    @QueryMapping(value = "runActivity")
+    public Activity getActivityByUserId(@Argument Long id){
+        return activityService.getActivityByUserId(id);
     }
 
 }
